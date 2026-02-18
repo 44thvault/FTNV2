@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Florida Trees News — Cannabis, hemp, and medical marijuana news for Florida.">
+<title>Florida Trees News</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:    #111009;
+  --ink2:   #2e2c28;
+  --ink3:   #6b665e;
+  --paper:  #f5f0e8;
+  --paper2: #ede8dd;
+  --paper3: #e2dcd0;
+  --rule:   rgba(17,16,9,0.14);
+  --green:  #1f6b38;
+  --green2: #174f29;
+  --red:    #8b1a1a;
+  --f-mast: 'Courier Prime', 'Courier New', monospace;
+  --f-head: 'Playfair Display', serif;
+  --f-body: 'Libre Baskerville', serif;
+  --f-mono: 'IBM Plex Mono', monospace;
+  --g: 24px;
+  --max: 1300px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--f-body); background: var(--paper); color: var(--ink); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+.topbar { background: var(--ink); color: rgba(245,240,232,0.45); padding: 5px var(--g); display: flex; align-items: center; justify-content: space-between; font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; gap: 12px; }
+.topbar-live { display: flex; align-items: center; gap: 7px; color: #87d9a0; font-weight: 600; flex-shrink: 0; }
+.live-dot { width: 6px; height: 6px; background: #87d9a0; border-radius: 50%; animation: pulse 2.2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.65)} }
+.topbar-mid { flex: 1; text-align: center; }
+
+.masthead { max-width: var(--max); margin: 0 auto; padding: 20px var(--g) 0; }
+.mast-top { border-top: 4px solid var(--ink); margin-bottom: 14px; }
+.mast-body { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); flex-wrap: wrap; }
+.mast-title { font-family: var(--f-mast); font-size: clamp(34px, 6vw, 78px); font-weight: 700; letter-spacing: 0.07em; line-height: 1; text-transform: uppercase; color: var(--ink); }
+.mast-title span { color: var(--green); }
+.mast-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.mast-edition { font-family: var(--f-mono); font-size: 10px; color: var(--ink3); text-align: right; line-height: 1.65; }
+.mast-edition strong { color: var(--ink2); display: block; }
+
+.navbar { position: sticky; top: 0; z-index: 100; background: var(--ink); }
+.navbar-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--g); display: flex; align-items: center; height: 44px; }
+.nav-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.5); }
+.nav-right { margin-left: auto; display: flex; align-items: center; }
+.nav-search-wrap { position: relative; display: flex; align-items: center; }
+.nav-si { position: absolute; left: 10px; font-size: 12px; color: rgba(245,240,232,0.3); pointer-events: none; }
+.nav-search { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 2px; padding: 5px 10px 5px 28px; color: var(--paper); font-family: var(--f-mono); font-size: 11px; outline: none; width: 170px; transition: all 0.2s; }
+.nav-search::placeholder { color: rgba(245,240,232,0.3); }
+.nav-search:focus { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.25); }
+
+.issue-line { max-width: var(--max); margin: 0 auto; padding: 9px var(--g); border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.il-count { font-family: var(--f-mono); font-size: 10px; color: var(--ink3); letter-spacing: 0.07em; text-transform: uppercase; }
+.il-count strong { color: var(--green); }
+.sort-wrap { display: flex; align-items: center; gap: 8px; font-family: var(--f-mono); font-size: 10px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.07em; }
+.sort-pill { padding: 3px 10px; border: 1px solid var(--rule); background: transparent; font-family: var(--f-mono); font-size: 10px; color: var(--ink3); cursor: pointer; transition: all 0.13s; }
+.sort-pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.layout { max-width: var(--max); margin: 0 auto; padding: 0 var(--g); display: grid; grid-template-columns: 1fr 260px; }
+.main-col { padding: 24px 28px 60px 0; border-right: 1px solid var(--rule); min-width: 0; }
+.side-col { padding: 24px 0 60px 24px; }
+
+.feed { display: flex; flex-direction: column; }
+.ni { display: grid; grid-template-columns: 1fr 136px; gap: 18px; align-items: start; padding: 22px 0; border-bottom: 1px solid var(--rule); animation: fadein 0.35s ease both; transition: background 0.13s, padding 0.13s, margin 0.13s; }
+.ni:first-child { padding-top: 0; }
+.ni:hover { background: var(--paper2); margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+.ni.feat { grid-template-columns: 1fr; border-bottom: 3px solid var(--ink); padding-bottom: 24px; margin-bottom: 2px; }
+.ni.feat:hover { margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+.ni.feat .ni-img-wrap { width: 100%; height: 280px; margin-bottom: 16px; }
+.ni.feat .ni-headline { font-size: clamp(22px, 3.5vw, 36px); line-height: 1.15; margin-bottom: 8px; }
+.ni.feat .ni-deck { display: block; }
+@keyframes fadein { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.ni-body { min-width: 0; }
+.ni-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 7px; }
+.ni-src { font-family: var(--f-mono); font-size: 9px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); border-bottom: 1px solid var(--green); padding-bottom: 1px; }
+.ni-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--rule); flex-shrink: 0; }
+.ni-time { font-family: var(--f-mono); font-size: 9px; color: var(--ink3); }
+.ni-breaking { font-family: var(--f-mono); font-size: 8px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--red); border: 1px solid var(--red); padding: 1px 5px; animation: blink 2s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1} 55%{opacity:.35} }
+.ni-headline { font-family: var(--f-head); font-size: 18px; font-weight: 700; line-height: 1.3; color: var(--ink); margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; transition: color 0.13s; }
+.ni:hover .ni-headline { color: var(--green2); }
+.ni-deck { display: none; font-size: 13.5px; font-style: italic; color: var(--ink2); line-height: 1.65; margin-bottom: 8px; }
+.ni-byline { font-family: var(--f-mono); font-size: 9px; color: var(--ink3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 8px; }
+.ni-byline span { color: var(--green); text-decoration: underline; text-underline-offset: 2px; }
+.ni-img-wrap { width: 136px; height: 96px; overflow: hidden; background: var(--paper3); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--ink3); flex-shrink: 0; }
+.ni-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.skel-wrap { display: flex; flex-direction: column; }
+.skel-row { display: grid; grid-template-columns: 1fr 136px; gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--rule); animation: shimmer 1.5s ease infinite; }
+.skel-row:first-child { padding-top: 0; }
+.skel-b { display: flex; flex-direction: column; gap: 9px; }
+.skel-l { height: 11px; background: var(--paper3); border-radius: 1px; }
+.skel-s { height: 9px; background: var(--paper3); border-radius: 1px; }
+.skel-img { width: 136px; height: 96px; background: var(--paper3); flex-shrink: 0; }
+@keyframes shimmer { 0%,100%{opacity:1}50%{opacity:.4} }
+
+.empty { padding: 56px 0; text-align: center; color: var(--ink3); }
+.empty-g { font-family: var(--f-head); font-size: 64px; font-style: italic; color: var(--paper3); display: block; margin-bottom: 12px; }
+.empty p { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 2; }
+
+.lm-wrap { padding-top: 24px; border-top: 1px solid var(--rule); margin-top: 2px; display: flex; justify-content: center; }
+.btn-lm { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 28px; border: 1px solid var(--ink); color: var(--ink); cursor: pointer; transition: all 0.15s; }
+.btn-lm:hover { background: var(--ink); color: var(--paper); }
+
+.sw { margin-bottom: 28px; }
+.sw-hd { font-family: var(--f-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink3); padding-bottom: 7px; border-bottom: 2px solid var(--ink); margin-bottom: 14px; }
+.trend-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; transition: background 0.13s, padding 0.13s, margin 0.13s; }
+.trend-item:hover { background: var(--paper2); margin: 0 -8px; padding: 9px 8px; }
+.trend-item:last-child { border-bottom: none; }
+.trend-num { font-family: var(--f-head); font-style: italic; font-size: 22px; font-weight: 700; color: var(--paper3); flex-shrink: 0; line-height: 1; width: 24px; }
+.trend-title { font-family: var(--f-head); font-size: 12.5px; font-weight: 600; line-height: 1.4; color: var(--ink); }
+.trend-item:hover .trend-title { color: var(--green2); }
+.trend-src { font-family: var(--f-mono); font-size: 9px; color: var(--ink3); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+footer { background: var(--ink); color: var(--paper); padding: 30px var(--g) 26px; text-align: center; border-top: 3px solid var(--ink); }
+.foot-title { font-family: var(--f-mast); font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.foot-title span { color: #87d9a0; }
+.foot-updated { font-family: var(--f-mono); font-size: 10px; color: rgba(245,240,232,0.35); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px; }
+.foot-legal { font-family: var(--f-mono); font-size: 10px; color: rgba(245,240,232,0.25); letter-spacing: 0.03em; line-height: 1.75; max-width: 520px; margin: 0 auto; }
+
+.scrtop { position: fixed; bottom: 22px; right: 22px; width: 36px; height: 36px; background: var(--ink); color: var(--paper); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.2s; z-index: 200; }
+.scrtop.on { opacity: 1; pointer-events: auto; }
+.scrtop:hover { transform: translateY(-3px); background: var(--green2); }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .main-col { padding: 18px 0 30px; border-right: none; } .side-col { padding: 0 0 40px; border-top: 3px solid var(--ink); } .mast-right { display: none; } }
+@media (max-width: 640px) { :root { --g: 14px; } .topbar-mid { display: none; } .ni { grid-template-columns: 1fr; } .ni-img-wrap { width: 100%; height: 180px; } .ni.feat .ni-img-wrap { height: 200px; } .skel-row { grid-template-columns: 1fr; } .skel-img { display: none; } .nav-search { width: 120px; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span id="todayDate">—</span>
+  <span class="topbar-mid">Florida Cannabis · Hemp · Medical</span>
+  <span class="topbar-live"><span class="live-dot"></span>Live Feed</span>
+</div>
+
+<div class="masthead">
+  <div class="mast-top"></div>
+  <div class="mast-body">
+    <div class="mast-title">Florida <span>Trees</span> News</div>
+    <div class="mast-right">
+      <div class="mast-edition">
+        <strong id="editionLabel">—</strong>
+        <span id="statLine">Loading…</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <span class="nav-label">Latest Stories</span>
+    <div class="nav-right">
+      <div class="nav-search-wrap">
+        <span class="nav-si">⌕</span>
+        <input class="nav-search" id="searchInput" type="search" placeholder="Search…" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="issue-line">
+  <div class="il-count" id="resultBar">Loading stories…</div>
+  <div class="sort-wrap">
+    Sort:
+    <button class="sort-pill active" data-sort="date">Newest</button>
+    <button class="sort-pill" data-sort="source">Source</button>
+  </div>
+</div>
+
+<div class="layout">
+  <main class="main-col">
+    <div class="skel-wrap" id="skeletons">
+      <div class="skel-row"><div class="skel-b"><div class="skel-s" style="width:38%"></div><div class="skel-l" style="width:92%"></div><div class="skel-l" style="width:70%"></div><div class="skel-s" style="width:30%"></div></div><div class="skel-img"></div></div>
+      <div class="skel-row"><div class="skel-b"><div class="skel-s" style="width:38%"></div><div class="skel-l" style="width:85%"></div><div class="skel-l" style="width:60%"></div><div class="skel-s" style="width:30%"></div></div><div class="skel-img"></div></div>
+      <div class="skel-row"><div class="skel-b"><div class="skel-s" style="width:38%"></div><div class="skel-l" style="width:90%"></div><div class="skel-l" style="width:55%"></div></div><div class="skel-img"></div></div>
+      <div class="skel-row"><div class="skel-b"><div class="skel-s" style="width:38%"></div><div class="skel-l" style="width:80%"></div><div class="skel-l" style="width:75%"></div></div><div class="skel-img"></div></div>
+      <div class="skel-row"><div class="skel-b"><div class="skel-s" style="width:38%"></div><div class="skel-l" style="width:95%"></div><div class="skel-l" style="width:62%"></div></div><div class="skel-img"></div></div>
+    </div>
+    <div class="feed" id="feed" style="display:none"></div>
+    <div class="lm-wrap" id="lmWrap" style="display:none">
+      <button class="btn-lm" id="lmBtn">Load More Stories →</button>
+    </div>
+  </main>
+  <aside class="side-col">
+    <div class="sw">
+      <div class="sw-hd">Trending Stories</div>
+      <div id="trendList"><div style="font-family:var(--f-mono);font-size:11px;color:var(--ink3);padding:8px 0">Loading…</div></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div class="foot-title">Florida <span>Trees</span> News</div>
+  <div class="foot-updated" id="footUpdated">—</div>
+  <div class="foot-legal">This site aggregates public news. All rights belong to their respective owners.<br>Not affiliated with any dispensary or cannabis company. For informational purposes only.</div>
+</footer>
+
+<button class="scrtop" id="scrTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script>
+const PAGE = 12;
+
+// Florida-specific Google News RSS feeds via allorigins proxy
+const FEEDS = [
+  { label: 'FL Cannabis',    url: 'https://news.google.com/rss/search?q=florida+cannabis&hl=en-US&gl=US&ceid=US:en' },
+  { label: 'FL Marijuana',   url: 'https://news.google.com/rss/search?q=florida+marijuana&hl=en-US&gl=US&ceid=US:en' },
+  { label: 'FL Hemp',        url: 'https://news.google.com/rss/search?q=florida+hemp&hl=en-US&gl=US&ceid=US:en' },
+  { label: 'FL Medical MMJ', url: 'https://news.google.com/rss/search?q=florida+%22medical+marijuana%22&hl=en-US&gl=US&ceid=US:en' },
+  { label: 'FL Dispensary',  url: 'https://news.google.com/rss/search?q=florida+dispensary+marijuana&hl=en-US&gl=US&ceid=US:en' },
+];
+
+let all = [], filtered = [], shown = 0, query = '', sort = 'date';
+
+// Simple timeout wrapper — works in all browsers
+function fetchWithTimeout(url, ms) {
+  return new Promise(function(resolve, reject) {
+    var timer = setTimeout(function() { reject(new Error('timeout')); }, ms);
+    fetch(url).then(function(r) {
+      clearTimeout(timer);
+      resolve(r);
+    }).catch(function(e) {
+      clearTimeout(timer);
+      reject(e);
+    });
+  });
+}
+
+function ago(ts) {
+  var s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'Just now';
+  var m = Math.floor(s / 60);
+  if (m < 60) return m + 'm ago';
+  var h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  var d = Math.floor(h / 24);
+  return d === 1 ? 'Yesterday' : d + 'd ago';
+}
+function isBreaking(ts) { return Date.now() - ts < 10800000; }
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function parseRSS(xmlStr, label) {
+  try {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(xmlStr, 'text/xml');
+    var items = Array.from(doc.querySelectorAll('item'));
+    var out = [];
+    items.forEach(function(item) {
+      var title = (item.querySelector('title') || {}).textContent || '';
+      var link  = (item.querySelector('link') || {}).textContent || '';
+      // fallback: guid
+      if (!link) { var g = item.querySelector('guid'); if (g) link = g.textContent || ''; }
+      if (!title.trim() || !link.trim()) return;
+      if (!link.startsWith('http')) return;
+      var pubDate = (item.querySelector('pubDate') || {}).textContent || '';
+      var ts = pubDate ? Date.parse(pubDate) : Date.now();
+      if (isNaN(ts)) ts = Date.now();
+      var rawDesc = (item.querySelector('description') || {}).textContent || '';
+      var desc = rawDesc.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,260);
+      // thumbnail
+      var thumb = '';
+      var mc = item.getElementsByTagNameNS('*','content')[0] || item.getElementsByTagNameNS('*','thumbnail')[0];
+      if (mc) thumb = mc.getAttribute('url') || '';
+      if (!thumb) { var enc = item.querySelector('enclosure'); if (enc) thumb = enc.getAttribute('url') || ''; }
+      out.push({ title: title.trim(), link: link.trim(), description: desc, thumbnail: thumb.startsWith('http') ? thumb : '', pubDate: pubDate, _pubTimestamp: ts, _sourceLabel: label });
+    });
+    return out;
+  } catch(e) { return []; }
+}
+
+async function fetchFeed(feed) {
+  // Use allorigins /get which returns JSON { contents: "xml" }
+  var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(feed.url);
+  var r = await fetchWithTimeout(proxyUrl, 10000);
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  var json = await r.json();
+  var xml = json.contents || '';
+  if (!xml) throw new Error('empty response');
+  return parseRSS(xml, feed.label);
+}
+
+async function loadAll() {
+  var results = await Promise.allSettled(FEEDS.map(function(f) { return fetchFeed(f); }));
+  var raw = [];
+  results.forEach(function(r) { if (r.status === 'fulfilled') raw = raw.concat(r.value); });
+  var seen = new Set();
+  all = raw.filter(function(a) {
+    var key = a.title.slice(0,55).toLowerCase().replace(/\W/g,'');
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+  return results.filter(function(r) { return r.status === 'rejected'; }).length;
+}
+
+function card(a, idx, feat) {
+  var br = isBreaking(a._pubTimestamp) ? '<span class="ni-breaking">Breaking</span>' : '';
+  var img = a.thumbnail
+    ? '<div class="ni-img-wrap"><img src="' + esc(a.thumbnail) + '" alt="" loading="lazy" onerror="this.closest(\'.ni-img-wrap\').innerHTML=\'📰\'"></div>'
+    : '<div class="ni-img-wrap">📰</div>';
+  if (feat) {
+    var deck = a.description ? '<div class="ni-deck">' + esc(a.description.slice(0,240)) + '…</div>' : '';
+    return '<a class="ni feat" href="' + esc(a.link) + '" target="_blank" rel="noopener" style="animation-delay:.04s">'
+      + '<div class="ni-img-wrap" style="width:100%;height:280px;margin-bottom:16px">'
+      + (a.thumbnail ? '<img src="' + esc(a.thumbnail) + '" alt="" loading="lazy" onerror="this.closest(\'.ni-img-wrap\').innerHTML=\'📰\'">' : '📰')
+      + '</div><div class="ni-body"><div class="ni-meta"><span class="ni-src">' + esc(a._sourceLabel) + '</span><span class="ni-dot"></span><span class="ni-time">' + ago(a._pubTimestamp) + '</span>' + br + '</div>'
+      + '<div class="ni-headline">' + esc(a.title) + '</div>' + deck
+      + '<div class="ni-byline">From <span>' + esc(a._sourceLabel) + '</span> — Read full story →</div></div></a>';
+  }
+  return '<a class="ni" href="' + esc(a.link) + '" target="_blank" rel="noopener" style="animation-delay:' + ((idx % PAGE) * 0.04) + 's">'
+    + '<div class="ni-body"><div class="ni-meta"><span class="ni-src">' + esc(a._sourceLabel) + '</span><span class="ni-dot"></span><span class="ni-time">' + ago(a._pubTimestamp) + '</span>' + br + '</div>'
+    + '<div class="ni-headline">' + esc(a.title) + '</div>'
+    + '<div class="ni-byline"><span>' + esc(a._sourceLabel) + '</span> — Read full story →</div></div>' + img + '</a>';
+}
+
+function applyFilters() {
+  var q = query.toLowerCase();
+  filtered = q ? all.filter(function(a) { return (a.title + ' ' + a.description).toLowerCase().indexOf(q) >= 0; }) : all.slice();
+  filtered.sort(sort === 'source'
+    ? function(a,b) { return a._sourceLabel.localeCompare(b._sourceLabel); }
+    : function(a,b) { return b._pubTimestamp - a._pubTimestamp; }
+  );
+  shown = 0;
+  renderPage(true);
+}
+
+function renderPage(reset) {
+  var feed = document.getElementById('feed');
+  var start = reset ? 0 : shown;
+  var end = Math.min(start + PAGE, filtered.length);
+  var slice = filtered.slice(start, end);
+  if (reset) {
+    shown = 0;
+    feed.style.display = 'flex';
+    feed.innerHTML = slice.length
+      ? slice.map(function(a,i) { return card(a,i,i===0); }).join('')
+      : '<div class="empty"><span class="empty-g">∅</span><p>No stories found.</p></div>';
+  } else {
+    slice.forEach(function(a,i) { feed.insertAdjacentHTML('beforeend', card(a, shown+i, false)); });
+  }
+  shown = end;
+  document.getElementById('resultBar').innerHTML = '<strong>' + Math.min(shown, filtered.length) + '</strong> of <strong>' + filtered.length + '</strong> stories';
+  document.getElementById('lmWrap').style.display = filtered.length > shown ? 'flex' : 'none';
+}
+
+function renderTrending() {
+  document.getElementById('trendList').innerHTML = all.slice(0,7).map(function(a,i) {
+    return '<a class="trend-item" href="' + esc(a.link) + '" target="_blank" rel="noopener">'
+      + '<span class="trend-num">' + (i+1) + '</span><div>'
+      + '<div class="trend-title">' + esc(a.title.slice(0,82)) + (a.title.length>82?'…':'') + '</div>'
+      + '<div class="trend-src">' + esc(a._sourceLabel) + ' · ' + ago(a._pubTimestamp) + '</div>'
+      + '</div></a>';
+  }).join('');
+}
+
+function updateMeta() {
+  var now = new Date();
+  document.getElementById('todayDate').textContent = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('editionLabel').textContent = 'Vol. ' + now.getFullYear() + ' · Issue ' + Math.ceil((now - new Date(now.getFullYear(),0,0))/86400000);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var todayN = all.filter(function(a) { return a._pubTimestamp >= today.getTime(); }).length;
+  document.getElementById('statLine').textContent = all.length + ' articles · ' + todayN + ' today';
+  document.getElementById('footUpdated').textContent = 'Updated ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + ' · Refreshes every 10 min';
+}
+
+async function init(silent) {
+  if (!silent) {
+    document.getElementById('skeletons').style.display = 'flex';
+    document.getElementById('feed').style.display = 'none';
+    document.getElementById('lmWrap').style.display = 'none';
+  }
+  try {
+    await loadAll();
+    document.getElementById('skeletons').style.display = 'none';
+    if (!all.length) {
+      document.getElementById('feed').style.display = 'flex';
+      document.getElementById('feed').innerHTML = '<div class="empty"><span class="empty-g">…</span><p>Could not load stories.<br>Retrying in 30 seconds.</p></div>';
+      setTimeout(function() { init(true); }, 30000);
+      return;
+    }
+    applyFilters();
+    renderTrending();
+    updateMeta();
+  } catch(e) {
+    document.getElementById('skeletons').style.display = 'none';
+    document.getElementById('feed').style.display = 'flex';
+    document.getElementById('feed').innerHTML = '<div class="empty"><span class="empty-g">!</span><p>Could not connect.<br>Retrying in 30 seconds.</p></div>';
+    setTimeout(function() { init(true); }, 30000);
+  }
+}
+
+init(false);
+setInterval(function() { init(true); }, 600000);
+
+document.querySelectorAll('.sort-pill').forEach(function(p) {
+  p.addEventListener('click', function() {
+    document.querySelectorAll('.sort-pill').forEach(function(x) { x.classList.remove('active'); });
+    p.classList.add('active');
+    sort = p.dataset.sort;
+    applyFilters();
+  });
+});
+
+var deb;
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  clearTimeout(deb);
+  deb = setTimeout(function() { query = e.target.value.trim(); applyFilters(); }, 280);
+});
+
+document.getElementById('lmBtn').addEventListener('click', function() { renderPage(false); });
+
+window.addEventListener('scroll', function() {
+  document.getElementById('scrTop').classList.toggle('on', window.scrollY > 500);
+}, { passive: true });
+</script>
+</body>
+</html>
